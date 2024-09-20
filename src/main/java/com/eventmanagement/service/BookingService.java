@@ -35,4 +35,15 @@ public class BookingService {
     public List<Booking> getUserBookings(User user) {
         return bookingRepository.findByUser(user);
     }
+
+    public void cancelBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        Event event = booking.getEvent();
+        event.setAvailableSeats(event.getAvailableSeats() + 1);
+
+        bookingRepository.delete(booking);
+        eventRepository.save(event);
+    }
 }

@@ -6,6 +6,7 @@ import com.eventmanagement.entity.User;
 import com.eventmanagement.service.BookingService;
 import com.eventmanagement.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,4 +32,11 @@ public class BookingController {
     public List<Booking> getUserBookings(@AuthenticationPrincipal User user) {
         return bookingService.getUserBookings(user);
     }
+
+    @DeleteMapping("/cancel/{bookingId}")
+    public ResponseEntity<String> cancelBooking(@PathVariable Long bookingId) {
+        bookingService.cancelBooking(bookingId);
+        return ResponseEntity.ok("Booking cancelled successfully.");
+    }
 }
+
